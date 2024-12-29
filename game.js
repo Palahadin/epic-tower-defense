@@ -18,7 +18,21 @@ class Game {
     }
 
     initScene() {
-        // Implementierung folgt
+        // Boden hinzufügen
+        const groundGeometry = new THREE.PlaneGeometry(10, 10);
+        const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        this.scene.add(ground);
+
+        // Licht hinzufügen
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(0, 10, 0);
+        this.scene.add(light);
+
+        // Kamera positionieren
+        this.camera.position.set(0, 10, 10);
+        this.camera.lookAt(0, 0, 0);
     }
 
     update() {
@@ -30,4 +44,25 @@ class Game {
     }
 }
 
-// Implementierung weiterer Klassen und Funktionen folgt
+class Map {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+        this.grid = this.generateGrid();
+    }
+
+    generateGrid() {
+        return Array(this.height).fill().map(() => Array(this.width).fill(0));
+    }
+}
+
+// Spielinitialisierung
+const game = new Game();
+
+function gameLoop() {
+    requestAnimationFrame(gameLoop);
+    game.update();
+    game.render();
+}
+
+gameLoop();
